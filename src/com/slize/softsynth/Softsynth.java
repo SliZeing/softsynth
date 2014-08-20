@@ -1,7 +1,7 @@
 package com.slize.softsynth;
 
-import com.slize.softsynth.Engien.Output;
-import com.slize.softsynth.Modules.Oscillator;
+import com.slize.softsynth.engien.Output;
+import com.slize.softsynth.modules.Oscillator;
 
 public class Softsynth {
 
