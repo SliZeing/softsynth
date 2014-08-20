@@ -55,4 +55,8 @@ public class Output implements Runnable, SampleProvider {
     public synchronized static void setSampleProvider(SampleProvider newSampleProvider) {
         sampleProvider = newSampleProvider;
     }
+
+    public static int getSampleRate() {
+        return SAMPLE_RATE;
+    }
 }
