@@ -2,7 +2,7 @@ package com.slize.softsynth.Modules;
 
 import com.slize.softsynth.Engien.Output;
 import com.slize.softsynth.Engien.SampleProvider;
-import com.slize.softsynth.utlis.SampleConverter;
+import com.slize.softsynth.Engien.SampleConverter;
 
 import java.util.ArrayList;
 

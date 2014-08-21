@@ -1,7 +1,7 @@
 package com.slize.softsynth.Modules;
 
 import com.slize.softsynth.Engien.SampleProvider;
-import com.slize.softsynth.utlis.SampleConverter;
+import com.slize.softsynth.Engien.SampleConverter;
 
 public class Attenuator implements SampleProvider {
     private SampleProvider provider;
