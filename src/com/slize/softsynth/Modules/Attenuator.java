@@ -35,7 +35,7 @@ public class Attenuator implements SampleProvider {
             // If there is cv input then apply that to the attenuationRatio
             if(cvBuffer != null) {
                 short cvSample = SampleConverter.toSample(cvBuffer, index);
-                double cvValue = SampleConverter.getSampleValue(cvSample);
+                double cvValue = SampleConverter.getSampleValue(cvSample) * 2;
 
 
                 if(cvValue < 0.0) {
@@ -43,13 +43,12 @@ public class Attenuator implements SampleProvider {
                 }
 
                 // Apply modulation value to sample
-                if(attenuationRatio * cvValue <= 1.0) {
+                if(attenuationBaseRatio * cvValue <= 1.0) {
                     attenuationRatio = attenuationBaseRatio * cvValue;
                 }
-                else {
-                    attenuationRatio = 1.0;
-                }
             }
+
+            System.out.println(attenuationRatio);
 
             short sample = SampleConverter.toSample(buffer, index);
 
