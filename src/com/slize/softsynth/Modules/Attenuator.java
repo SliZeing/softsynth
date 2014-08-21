@@ -70,6 +70,7 @@ public class Attenuator implements SampleProvider {
     public void setAttenuationBaseRatio(double attenuationRatio) {
         if(attenuationRatio >= 0.0 && attenuationRatio <= 1.0) {
             this.attenuationBaseRatio = attenuationRatio;
+            this.attenuationRatio = this.attenuationBaseRatio;
         }
         else {
             throw new IllegalArgumentException("attenuationRatio has to be between 0.0 and 1.0");
