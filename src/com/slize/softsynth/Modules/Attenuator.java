@@ -13,6 +13,27 @@ public class Attenuator implements SampleProvider {
         attenuationRatio = 1.0;
     }
 
+    private short attenuate(short sample) {
+        if(lfo != null) {
+            double modulator = lfo.getSample();
+
+            // The modulator should not be < 0.0, so we convert the value to a positive number if it's < 0.0.
+            if(modulator < 0.0) {
+                modulator *= -1;
+            }
+
+            // Apply modulation value to sample
+            if(attenuationRatio * modulator <= 1.0) {
+                sample *= attenuationRatio * modulator;
+            }
+        }
+        else {
+            sample *= attenuationRatio;
+        }
+
+        return sample;
+    }
+
     @Override
     public int getSamples(byte[] buffer, int bufferSize) {
         provider.getSamples(buffer, bufferSize);
@@ -20,28 +41,13 @@ public class Attenuator implements SampleProvider {
         int index = 0;
 
         for(int i = 0; i < bufferSize / 2; i++) {
-            short s = SampleConverter.toSample(buffer, index);
+            short sample = SampleConverter.toSample(buffer, index);
 
-            if(lfo != null) {
-                double modulator = lfo.getSample();
-
-                // The modulator should not be < 0.0, so we convert the value to a positive number if it's < 0.0.
-                if(modulator < 0.0) {
-                    modulator *= -1;
-                }
-
-                // Apply modulation value to sample
-                if(attenuationRatio * modulator <= 1.0) {
-                    s *= attenuationRatio * modulator;
-                }
-            }
-            else {
-                s *= attenuationRatio;
-            }
+            sample = attenuate(sample);
 
             // Store the processed sample back to the buffer.
-            buffer[index++] = (byte)(s >> 8);
-            buffer[index++] = (byte)(s & 0xFF);
+            buffer[index++] = (byte)(sample >> 8);
+            buffer[index++] = (byte)(sample & 0xFF);
         }
 
         return bufferSize;
