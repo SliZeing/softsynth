@@ -1,11 +1,13 @@
 package com.slize.softsynth.Modules;
 
 import com.slize.softsynth.Engien.SampleProvider;
+import com.slize.softsynth.utlis.SampleConverter;
 
 public class Attenuator implements SampleProvider {
     private SampleProvider provider;
 
     private double attenuationRatio;
+    private Oscillator lfo;
 
     public Attenuator() {
         attenuationRatio = 1.0;
@@ -18,17 +20,26 @@ public class Attenuator implements SampleProvider {
         int index = 0;
 
         for(int i = 0; i < bufferSize / 2; i++) {
-            // Get a sample to process
-            byte b2 = buffer[index];
-            byte b1 = buffer[index+1];
+            short s = SampleConverter.toSample(buffer, index);
 
-            // Convert bytes into short sample
-            short s = (short)((b2 << 8) + b1);
+            if(lfo != null) {
+                double modulator = lfo.getSample();
 
-            // Apply envelope value to sample
-            s *= attenuationRatio;
+                // The modulator should not be < 0.0, so we convert the value to a positive number if it's < 0.0.
+                if(modulator < 0.0) {
+                    modulator *= -1;
+                }
 
-            // Store the processed sample
+                // Apply modulation value to sample
+                if(attenuationRatio * modulator <= 1.0) {
+                    s *= attenuationRatio * modulator;
+                }
+            }
+            else {
+                s *= attenuationRatio;
+            }
+
+            // Store the processed sample back to the buffer.
             buffer[index++] = (byte)(s >> 8);
             buffer[index++] = (byte)(s & 0xFF);
         }
@@ -47,5 +58,9 @@ public class Attenuator implements SampleProvider {
         else {
             throw new IllegalArgumentException("attenuationRatio has to be between 0.0 and 1.0");
         }
+    }
+
+    public void setLfo(Oscillator lfo) {
+        this.lfo = lfo;
     }
 }

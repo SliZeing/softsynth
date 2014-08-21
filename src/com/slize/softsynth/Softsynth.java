@@ -10,7 +10,7 @@ public class Softsynth {
         Thread output = new Thread(new Output(), "output");
 
         Oscillator osc1 = new Oscillator();
-
+        Oscillator lfo = new Oscillator();
         Attenuator attenuator = new Attenuator();
 
         output.start();
@@ -19,11 +19,14 @@ public class Softsynth {
         Output.setSampleProvider(attenuator);
 
         attenuator.setSampleProvider(osc1);
+        attenuator.setAttenuationRatio(0.5);
+        attenuator.setLfo(lfo);
+        lfo.setFrequency(1.0);
 
         while(true) {
-            attenuator.setAttenuationRatio(0.1);
-            Thread.sleep(1000);
-            attenuator.setAttenuationRatio(1.0);
+            lfo.setFrequency(2.0);
+            Thread.sleep(200);
+            lfo.setFrequency(5.0);
             Thread.sleep(1000);
         }
     }

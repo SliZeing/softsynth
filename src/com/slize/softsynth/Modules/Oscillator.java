@@ -17,7 +17,7 @@ public class Oscillator implements SampleProvider {
         setPulseWidth(0.5);
     }
 
-    private double getSample() {
+    public double getSample() {
         double value;
         double phase = sampleNumber / (double) samplesPerPeriod;
 
