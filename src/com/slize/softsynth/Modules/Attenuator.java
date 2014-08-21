@@ -35,16 +35,20 @@ public class Attenuator implements SampleProvider {
     }
 
     @Override
-    public int getSamples(byte[] buffer, int bufferSize) {
-        byte[] cvBuffer = new byte[bufferSize];
+    public int getSamples(byte[] buffer) {
+        byte[] cvBuffer = new byte[buffer.length];
 
-        provider.getSamples(buffer, bufferSize);
-        cv.getSamples(cvBuffer, bufferSize);
+        provider.getSamples(buffer);
+
+        if(cv != null) {
+            cv.getSamples(cvBuffer);
+        }
 
         int index = 0;
 
-        for(int i = 0; i < bufferSize / 2; i++) {
+        for(int i = 0; i < buffer.length / 2; i++) {
             short sample = SampleConverter.toSample(buffer, index);
+
             short cvSample = SampleConverter.toSample(cvBuffer, index);
 
             sample = attenuate(sample, cvSample);
@@ -54,7 +58,7 @@ public class Attenuator implements SampleProvider {
             buffer[index++] = (byte)(sample & 0xFF);
         }
 
-        return bufferSize;
+        return buffer.length;
     }
 
     public void setSampleProvider(SampleProvider provider) {

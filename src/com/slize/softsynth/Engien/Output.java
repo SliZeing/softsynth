@@ -31,7 +31,7 @@ public class Output implements Runnable, SampleProvider {
             sourceLine.start();
 
             while(nBytesRead != -1) {
-                nBytesRead = sampleProvider.getSamples(buffer, buffer.length);
+                nBytesRead = sampleProvider.getSamples(buffer);
 
                 if(nBytesRead >= 0) {
                     sourceLine.write(buffer, 0, nBytesRead);
@@ -48,7 +48,7 @@ public class Output implements Runnable, SampleProvider {
     }
 
     @Override
-    public int getSamples(byte[] buffer, int bufferSize) {
+    public int getSamples(byte[] buffer) {
         return 0;
     }
 

@@ -9,20 +9,14 @@ public class Softsynth {
     public static void main(String[] args) throws Exception {
         Thread output = new Thread(new Output(), "output");
 
-        Oscillator osc1 = new Oscillator();
-        Oscillator osc2 = new Oscillator();
-        Attenuator attenuator1 = new Attenuator();
+        Oscillator osc = new Oscillator();
 
         output.start();
 
         // Set what module has the output.
-        Output.setSampleProvider(attenuator1);
+        Output.setSampleProvider(osc);
 
-        osc1.setWaveform(Waveform.SAW);
-        osc1.setFrequency(69.0);
-        osc2.setFrequency(1.0);
-        attenuator1.setSampleProvider(osc1);
-        attenuator1.setAttenuationRatio(0.5);
-        attenuator1.setCv(osc2);
+        osc.setWaveform(Waveform.SQU);
+        osc.setFrequency(110.0);
     }
 }

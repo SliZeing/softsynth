@@ -48,16 +48,16 @@ public class Oscillator implements SampleProvider {
     }
 
     @Override
-    public int getSamples(byte[] buffer, int bufferSize) {
+    public int getSamples(byte[] buffer) {
         int index = 0;
-        for (int i = 0; i < (bufferSize / 2); i++) {
+        for (int i = 0; i < (buffer.length / 2); i++) {
             double ds = getSample() * Short.MAX_VALUE;
             short ss = (short) Math.round(ds);
             buffer[index++] = (byte)(ss >> 8);
             buffer[index++] = (byte)(ss & 0xFF);
         }
 
-        return bufferSize;
+        return buffer.length;
     }
 
     public void setFrequency(double frequency) {

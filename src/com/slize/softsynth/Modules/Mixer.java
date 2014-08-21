@@ -11,15 +11,15 @@ public class Mixer implements SampleProvider {
     private ArrayList<byte[]> tempBuffers = new ArrayList<byte[]>();
 
     @Override
-    public int getSamples(byte[] buffer, int bufferSize) {
+    public int getSamples(byte[] buffer) {
         int index = 0;
 
         // Get all the buffers from the providers
         for(int i = 0; i < tempBuffers.size(); i++) {
-            providers.get(i).getSamples(tempBuffers.get(i), bufferSize);
+            providers.get(i).getSamples(tempBuffers.get(i));
         }
 
-        for(int i = 0; i < bufferSize / 2; i++) {
+        for(int i = 0; i < buffer.length / 2; i++) {
             short sample = 0;
 
             // Add all the buffers to the mixer
@@ -31,7 +31,7 @@ public class Mixer implements SampleProvider {
             buffer[index++] = (byte)(sample & 0xFF);
         }
 
-        return bufferSize;
+        return buffer.length;
     }
 
     public void addSampleProvider(SampleProvider provider) {
