@@ -11,4 +11,8 @@ public class SampleConverter {
         return (short)((b2 << 8) + b1);
     }
 
+    public static double getSampleValue(short sample) {
+        return (double) sample / (double) Short.MAX_VALUE;
+    }
+
 }

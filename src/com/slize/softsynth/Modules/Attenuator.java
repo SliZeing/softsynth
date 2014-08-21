@@ -7,15 +7,15 @@ public class Attenuator implements SampleProvider {
     private SampleProvider provider;
 
     private double attenuationRatio;
-    private Oscillator lfo;
+    private SampleProvider cv;
 
     public Attenuator() {
         attenuationRatio = 1.0;
     }
 
-    private short attenuate(short sample) {
-        if(lfo != null) {
-            double modulator = lfo.getSample();
+    private short attenuate(short sample, short cvSample) {
+        if(cv != null) {
+            double modulator = SampleConverter.getSampleValue(cvSample);
 
             // The modulator should not be < 0.0, so we convert the value to a positive number if it's < 0.0.
             if(modulator < 0.0) {
@@ -36,14 +36,18 @@ public class Attenuator implements SampleProvider {
 
     @Override
     public int getSamples(byte[] buffer, int bufferSize) {
+        byte[] cvBuffer = new byte[bufferSize];
+
         provider.getSamples(buffer, bufferSize);
+        cv.getSamples(cvBuffer, bufferSize);
 
         int index = 0;
 
         for(int i = 0; i < bufferSize / 2; i++) {
             short sample = SampleConverter.toSample(buffer, index);
+            short cvSample = SampleConverter.toSample(cvBuffer, index);
 
-            sample = attenuate(sample);
+            sample = attenuate(sample, cvSample);
 
             // Store the processed sample back to the buffer.
             buffer[index++] = (byte)(sample >> 8);
@@ -66,7 +70,7 @@ public class Attenuator implements SampleProvider {
         }
     }
 
-    public void setLfo(Oscillator lfo) {
-        this.lfo = lfo;
+    public void setCv(SampleProvider provider) {
+        this.cv = provider;
     }
 }
