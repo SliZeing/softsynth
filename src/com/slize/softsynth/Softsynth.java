@@ -1,24 +1,29 @@
 package com.slize.softsynth;
 
-import com.slize.softsynth.engien.Output;
-import com.slize.softsynth.modules.Oscillator;
+import com.slize.softsynth.Engien.Output;
+import com.slize.softsynth.Modules.Attenuator;
+import com.slize.softsynth.Modules.Oscillator;
 
 public class Softsynth {
 
     public static void main(String[] args) throws Exception {
         Thread output = new Thread(new Output(), "output");
-        Oscillator osc = new Oscillator();
+
+        Oscillator osc1 = new Oscillator();
+
+        Attenuator attenuator = new Attenuator();
 
         output.start();
 
-        Output.setSampleProvider(osc);
+        // Set what module has the output.
+        Output.setSampleProvider(attenuator);
+
+        attenuator.setSampleProvider(osc1);
 
         while(true) {
-            osc.setFrequency(440.00 / 2);
+            attenuator.setAttenuationRatio(0.1);
             Thread.sleep(1000);
-            osc.setFrequency(523.25 / 2);
-            Thread.sleep(1000);
-            osc.setFrequency(659.25 / 2);
+            attenuator.setAttenuationRatio(1.0);
             Thread.sleep(1000);
         }
     }
