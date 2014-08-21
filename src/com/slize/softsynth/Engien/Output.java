@@ -59,4 +59,8 @@ public class Output implements Runnable, SampleProvider {
     public static int getSampleRate() {
         return SAMPLE_RATE;
     }
+
+    public static int getBufferSize() {
+        return BUFFER_SIZE;
+    }
 }
