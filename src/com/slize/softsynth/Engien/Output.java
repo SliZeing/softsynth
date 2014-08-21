@@ -6,7 +6,7 @@ public class Output implements Runnable, SampleProvider {
     private static final int SAMPLE_RATE = 44100;
     private static final int BIT_RATE = 16;
     private static final int CHANNELS = 1;
-    private static final int BUFFER_SIZE = 2048;
+    private static final int BUFFER_SIZE = 4096;
 
     private AudioFormat audioFormat;
     private DataLine.Info info;

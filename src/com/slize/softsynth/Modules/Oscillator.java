@@ -12,7 +12,7 @@ public class Oscillator implements SampleProvider {
 
 
     public Oscillator() {
-        waveform = Waveform.TRI;
+        waveform = Waveform.SIN;
         setFrequency(440.0);
         setPulseWidth(0.5);
     }
