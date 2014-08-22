@@ -48,8 +48,6 @@ public class Attenuator implements SampleProvider {
                 }
             }
 
-            System.out.println(attenuationRatio);
-
             short sample = SampleConverter.toSample(buffer, index);
 
             sample = attenuate(sample);
