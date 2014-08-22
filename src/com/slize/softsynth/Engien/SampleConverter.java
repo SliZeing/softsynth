@@ -8,7 +8,7 @@ public class SampleConverter {
         byte b1 = buffer[index + 1];
 
         // Convert bytes into short sample
-        return (short)((b2 << 8) + b1);
+        return (short)((b2 << 8) + (b1 & 0xFF));
     }
 
     public static double getSampleValue(short sample) {
